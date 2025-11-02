@@ -1,0 +1,49 @@
+{
+  "kind": "collectionType",
+  "collectionName": "publicacions",
+  "info": {
+    "singularName": "publicacion",
+    "pluralName": "publicacions",
+    "displayName": "Publicacion"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "titulo": {
+      "type": "string",
+      "maxLength": 255,
+      "required": true
+    },
+    "fechaPublicacion": {
+      "type": "datetime"
+    },
+    "esUrgente": {
+      "type": "boolean",
+      "default": false
+    },
+    "enviarNotificacion": {
+      "type": "boolean",
+      "default": false
+    },
+    "categorias": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::categoria.categoria",
+      "inversedBy": "publicaciones"
+    },
+    "users_permissions_users": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "plugin::users-permissions.user",
+      "mappedBy": "publicaciones"
+    },
+    "contenido": {
+      "type": "dynamiczone",
+      "components": [
+        "contenido.parrafo"
+      ]
+    }
+  }
+}

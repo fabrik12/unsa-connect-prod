@@ -1,0 +1,48 @@
+{
+  "kind": "collectionType",
+  "collectionName": "categorias",
+  "info": {
+    "singularName": "categoria",
+    "pluralName": "categorias",
+    "displayName": "Categoria"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "nombre": {
+      "type": "string",
+      "maxLength": 100,
+      "required": true,
+      "unique": true
+    },
+    "descripcion": {
+      "type": "blocks"
+    },
+    "esUrgente": {
+      "type": "boolean",
+      "default": false
+    },
+    "enviarNotificacion": {
+      "type": "boolean",
+      "default": false
+    },
+    "portada": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "publicaciones": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::publicacion.publicacion",
+      "mappedBy": "categorias"
+    }
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "collectionName": "components_contenido_parrafos",
+  "info": {
+    "displayName": "parrafo"
+  },
+  "options": {},
+  "attributes": {
+    "texto": {
+      "type": "blocks"
+    }
+  },
+  "config": {}
+}
