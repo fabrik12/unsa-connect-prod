@@ -46,11 +46,17 @@ Este proyecto está configurado para ejecutarse con Docker y Docker Compose, lo 
     _(Nota: Las claves de seguridad de Strapi (`APP_KEYS`, `JWT_SECRET`, etc.) se generarán en el primer arranque si las dejas vacías en el `.env`)._
 
 3.  **Instalar dependencias (local):**
-    Si no tienes `yarn.lock`, genera uno:
+    Si vas a trabajar en modo desarrollo (hot-reload), ejecuta SIEMPRE:
 
     ```bash
     yarn install
     ```
+
+    Esto instalará las dependencias en tu máquina local y generará la carpeta `node_modules`, necesaria para que Strapi funcione correctamente cuando el código fuente se monta como volumen en Docker.
+
+    > **Importante:** Si no ejecutas `yarn install` antes de levantar el contenedor, el backend no funcionará correctamente en modo desarrollo.
+
+    > Si solo quieres construir la imagen y no necesitas hot-reload, puedes comentar el volumen del código fuente en `docker-compose.yml` y no es necesario tener `node_modules` localmente.
 
 4.  **Construir e iniciar el contenedor de Strapi:**
     Este comando construirá la imagen de Strapi y levantará solo el backend (no hay contenedor de base de datos, se usa Supabase externo).
@@ -58,6 +64,22 @@ Este proyecto está configurado para ejecutarse con Docker y Docker Compose, lo 
     ```bash
     docker-compose up --build
     ```
+
+    > **Nota sobre Docker y desarrollo:**
+    > El archivo `docker-compose.yml` monta el código fuente local como volumen para permitir hot-reload. Esto sobrescribe los `node_modules` del contenedor con los de tu máquina local. Por eso, es obligatorio ejecutar `yarn install` localmente antes de levantar el contenedor.
+
+    > Si tienes problemas con dependencias, puedes comentar la línea del volumen en `docker-compose.yml`:
+    >
+    > ```yaml
+    > # - ./:/opt/app
+    > ```
+    >
+    > y reconstruir la imagen con:
+    >
+    > ```bash
+    > docker-compose build --no-cache
+    > docker-compose up
+    > ```
 
 5.  **Acceder al Admin:**
     Abre `http://localhost:1337/admin` en tu navegador y crea tu primer usuario administrador.
@@ -67,6 +89,15 @@ Este proyecto está configurado para ejecutarse con Docker y Docker Compose, lo 
 - **Ver logs (si algo falla):** `docker-compose logs -f`
 - **Detener los servicios:** `docker-compose down`
 - **Reiniciar los servicios:** `docker-compose restart`
+
+---
+
+> **Recomendación para equipos de desarrollo:**
+>
+> - Ejecuta `yarn install` localmente antes de levantar el contenedor.
+> - Si tienes problemas con dependencias, elimina la carpeta `node_modules` y vuelve a ejecutar `yarn install`.
+> - Para evitar conflictos, no mezcles `yarn.lock` y `package-lock.json`.
+> - Si solo quieres probar la imagen sin hot-reload, comenta el volumen del código fuente en `docker-compose.yml`.
 
 ---
 

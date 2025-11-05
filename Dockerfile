@@ -15,6 +15,9 @@ RUN yarn install
 # Copiar el resto del código del proyecto al contenedor
 COPY . .
 
+# Añadir node_modules/.bin al PATH
+ENV PATH="/opt/app/node_modules/.bin:$PATH"
+
 # Exponer el puerto que Strapi usa por defecto
 EXPOSE 1337
 

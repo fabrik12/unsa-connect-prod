@@ -11,10 +11,12 @@ services:
     volumes:
       # Persistencia de archivos subidos
       - ./public/uploads:/opt/app/public/uploads
-      # Montaje del código fuente para hot-reload
+      # Montaje del código fuente para hot-reload (solo para desarrollo local)
       - ./:/opt/app
       # Opcional: persistencia de node_modules (solo para desarrollo local)
       # - ./node_modules:/opt/app/node_modules
+      #
+      # Para producción, descomenta solo la línea de uploads.
     environment:
       - NODE_ENV=development
       - PORT=1337
