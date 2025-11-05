@@ -1,0 +1,26 @@
+version: '3.8'
+services:
+  strapi:
+    build: .
+    container_name: unsa-connect-backend-dev
+    restart: unless-stopped
+    env_file:
+      - .env
+    ports:
+      - "1337:1337"
+    volumes:
+      # Persistencia de archivos subidos
+      - ./public/uploads:/opt/app/public/uploads
+      # Montaje del código fuente para hot-reload
+      - ./:/opt/app
+      # Opcional: persistencia de node_modules (solo para desarrollo local)
+      # - ./node_modules:/opt/app/node_modules
+    environment:
+      - NODE_ENV=development
+      - PORT=1337
+    # Opcional: healthcheck para Strapi
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:1337/_health" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5

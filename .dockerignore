@@ -1,0 +1,13 @@
+# Ignorar dependencias locales y archivos generados
+node_modules
+uploads
+build
+.env
+.env.local
+*.log
+coverage
+public/uploadsnode_modules
+dist
+build
+.env
+*.log
