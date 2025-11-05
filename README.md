@@ -1,44 +1,87 @@
-# 🚀 Getting started with Strapi
+# Backend del Sistema de Información "UNSA Connect" (FSI)
 
-Strapi comes with a full featured [Command Line Interface](https://docs.strapi.io/dev-docs/cli) (CLI) which lets you scaffold and manage your project in seconds.
+Este repositorio contiene el backend y CMS para el proyecto "UNSA Connect", desarrollado para el curso de Fundamentos de Sistemas de Información (FSI).
 
-### `develop`
+## 1. Visión del Proyecto
 
-Start your Strapi application with autoReload enabled. [Learn more](https://docs.strapi.io/dev-docs/cli#strapi-develop)
+El objetivo es desarrollar el núcleo de un Sistema de Información que transforme la comunicación institucional de la UNSA, pasando de un modelo fragmentado a una plataforma centralizada.
 
-```
-npm run develop
-# or
-yarn develop
-```
+Este backend (CMS) se construye usando **Strapi v5** y servirá como la API REST principal para futuros clientes (web o móviles).
 
-### `start`
+## 2. Tech Stack
 
-Start your Strapi application with autoReload disabled. [Learn more](https://docs.strapi.io/dev-docs/cli#strapi-start)
+- **Framework:** Strapi v5 (Node.js)
+- **Base de Datos:** Supabase (PostgreSQL)
+- **Autenticación:** Strapi Users & Permissions (JWT)
+- **Notificaciones:** Firebase Cloud Messaging (FCM)
 
-```
-npm run start
-# or
-yarn start
-```
+---
 
-### `build`
+## 3. Configuración del Entorno de Desarrollo (con Docker)
 
-Build your admin panel. [Learn more](https://docs.strapi.io/dev-docs/cli#strapi-build)
+Este proyecto está configurado para ejecutarse con Docker y Docker Compose, lo que garantiza un entorno de desarrollo consistente.
 
-```
-npm run build
-# or
-yarn build
-```
+### Prerrequisitos
 
-## ⚙️ Deployment
+- Docker
+- Docker Compose (generalmente viene con Docker Desktop)
 
-Strapi gives you many possible deployment options for your project including [Strapi Cloud](https://cloud.strapi.io). Browse the [deployment section of the documentation](https://docs.strapi.io/dev-docs/deployment) to find the best solution for your use case.
+### Pasos de Instalación y Desarrollo
 
-```
-yarn strapi deploy
-```
+1.  **Clonar el repositorio:**
+
+    ```bash
+    git clone [URL_DE_TU_REPO]
+    cd [NOMBRE_DEL_REPO]
+    ```
+
+2.  **Configurar variables de entorno:**
+    Copia el archivo de ejemplo y completa los valores de Supabase y claves de Strapi.
+
+    ```bash
+    cp .env.example .env
+    # Edita .env y agrega tus credenciales de Supabase y claves de Strapi
+    ```
+
+    _(Nota: Las claves de seguridad de Strapi (`APP_KEYS`, `JWT_SECRET`, etc.) se generarán en el primer arranque si las dejas vacías en el `.env`)._
+
+3.  **Instalar dependencias (local):**
+    Si no tienes `yarn.lock`, genera uno:
+
+    ```bash
+    yarn install
+    ```
+
+4.  **Construir e iniciar el contenedor de Strapi:**
+    Este comando construirá la imagen de Strapi y levantará solo el backend (no hay contenedor de base de datos, se usa Supabase externo).
+
+    ```bash
+    docker-compose up --build
+    ```
+
+5.  **Acceder al Admin:**
+    Abre `http://localhost:1337/admin` en tu navegador y crea tu primer usuario administrador.
+
+### Comandos útiles de Docker
+
+- **Ver logs (si algo falla):** `docker-compose logs -f`
+- **Detener los servicios:** `docker-compose down`
+- **Reiniciar los servicios:** `docker-compose restart`
+
+---
+
+> **Nota sobre la base de datos:**
+>
+> Este proyecto utiliza **Supabase** como base de datos externa (PostgreSQL en la nube). No se incluye ni se levanta un contenedor de base de datos local. Configura las credenciales de Supabase en tu `.env`.
+
+---
+
+## 4. Diseño y Endpoints
+
+- El **Diseño Técnico** (Schema DBML y Contrato de API) se encuentra en la carpeta: `/_docs/Diseño Técnico del Proyecto.md`.
+- El **Documento de Visión** se encuentra en: `/_docs/Vision del Proyecto - FSI.md`.# Backend del Sistema de Información "UNSA Connect" (FSI)
+
+---
 
 ## 📚 Learn more
 
