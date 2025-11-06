@@ -22,4 +22,5 @@ ENV PATH="/opt/app/node_modules/.bin:$PATH"
 EXPOSE 1337
 
 # El comando para iniciar la aplicación en modo desarrollo
-CMD ["yarn", "develop"]
+#CMD ["yarn", "develop"]
+CMD ["sh", "-c", "yarn build && yarn develop"]
