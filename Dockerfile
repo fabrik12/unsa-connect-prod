@@ -18,10 +18,8 @@ COPY package.json ./
 COPY yarn.lock ./
 
 # Instalar las dependencias
-RUN yarn install
-
-# Reinstalar sharp para Linux dentro del contenedor
-RUN yarn add sharp --force
+# Use frozen-lockfile to keep installs deterministic.
+RUN yarn install --frozen-lockfile
 
 # Copiar el resto del código del proyecto al contenedor
 COPY . .

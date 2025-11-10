@@ -14,12 +14,13 @@ services:
       # Montaje del código fuente para hot-reload (solo para desarrollo local)
       - ./:/opt/app
       # Opcional: persistencia de node_modules (solo para desarrollo local)
-      # - ./node_modules:/opt/app/node_modules
+      - /opt/app/node_modules
       #
       # Para producción, descomenta solo la línea de uploads.
     environment:
-      - NODE_ENV=development
-      - PORT=1337
+      NODE_ENV: ${NODE_ENV:-development}
+      PORT: ${PORT:-1337}
+      
     # Opcional: healthcheck para Strapi
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:1337/_health" ]
