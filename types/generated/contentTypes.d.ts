@@ -497,6 +497,7 @@ export interface ApiPublicacionPublicacion extends Struct.CollectionTypeSchema {
       'api::publicacion.publicacion'
     > &
       Schema.Attribute.Private;
+    portada: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
     publishedAt: Schema.Attribute.DateTime;
     titulo: Schema.Attribute.String &
       Schema.Attribute.Required &

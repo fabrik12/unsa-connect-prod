@@ -44,6 +44,16 @@
       "components": [
         "contenido.parrafo"
       ]
+    },
+    "portada": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
     }
   }
 }
