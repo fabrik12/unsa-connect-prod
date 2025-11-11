@@ -61,7 +61,11 @@ export default factories.createCoreController('api::publicacion.publicacion', ({
 
         const populate = buildPopulate(rawPopulate);
 
-        const entities = await strapi.entityService.findMany('api::publicacion.publicacion', {
+        // Usa DB QUERY para saltar filtros automaticos de Strapi que ocultan publishedAt
+        const entities = await strapi.db.query('api::publicacion.publicacion').findMany({
+            where: {
+                publishedAt: { $notNull: true },
+            },
             populate,
         });
 
@@ -142,9 +146,18 @@ export default factories.createCoreController('api::publicacion.publicacion', ({
 
         const populate = buildPopulate(rawPopulate);
 
-        const entity = await strapi.entityService.findOne('api::publicacion.publicacion', id, {
+        // Usa DB QUERY para saltar filtros automaticos de Strapi que ocultan publishedAt
+        const entity = await strapi.db.query('api::publicacion.publicacion').findOne({
+            where: {
+                id: id,
+                publishedAt: { $notNull: true },
+            },
             populate,
         });
+
+        if (!entity) {
+            return ctx.notFound('Publicacion not found');
+        }
 
         // sanitize user sensitive fields
         const sensitiveKeys = ['password', 'resetPasswordToken', 'confirmationToken', 'registrationToken'];
