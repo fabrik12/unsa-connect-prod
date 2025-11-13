@@ -457,7 +457,7 @@ export interface ApiCategoriaCategoria extends Struct.CollectionTypeSchema {
       Schema.Attribute.SetMinMaxLength<{
         maxLength: 100;
       }>;
-    publicaciones: Schema.Attribute.Relation<
+    publicacions: Schema.Attribute.Relation<
       'manyToMany',
       'api::publicacion.publicacion'
     >;
@@ -469,10 +469,10 @@ export interface ApiCategoriaCategoria extends Struct.CollectionTypeSchema {
 }
 
 export interface ApiPublicacionPublicacion extends Struct.CollectionTypeSchema {
-  collectionName: 'publicacions';
+  collectionName: 'publicaciones';
   info: {
     displayName: 'Publicacion';
-    pluralName: 'publicacions';
+    pluralName: 'publicaciones';
     singularName: 'publicacion';
   };
   options: {
@@ -499,11 +499,7 @@ export interface ApiPublicacionPublicacion extends Struct.CollectionTypeSchema {
       Schema.Attribute.Private;
     portada: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
     publishedAt: Schema.Attribute.DateTime;
-    titulo: Schema.Attribute.String &
-      Schema.Attribute.Required &
-      Schema.Attribute.SetMinMaxLength<{
-        maxLength: 255;
-      }>;
+    titulo: Schema.Attribute.String & Schema.Attribute.Required;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -994,7 +990,7 @@ export interface PluginUsersPermissionsUser
         minLength: 6;
       }>;
     provider: Schema.Attribute.String;
-    publicaciones: Schema.Attribute.Relation<
+    publicacions: Schema.Attribute.Relation<
       'manyToMany',
       'api::publicacion.publicacion'
     >;

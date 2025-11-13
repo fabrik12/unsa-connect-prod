@@ -20,11 +20,11 @@
     "descripcion": {
       "type": "blocks"
     },
-    "publicaciones": {
+    "publicacions": {
       "type": "relation",
       "relation": "manyToMany",
       "target": "api::publicacion.publicacion",
-      "inversedBy": "categorias"
+      "mappedBy": "categorias"
     }
   }
 }
