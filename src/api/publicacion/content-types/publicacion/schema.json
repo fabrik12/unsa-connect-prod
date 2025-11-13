@@ -1,9 +1,9 @@
 {
   "kind": "collectionType",
-  "collectionName": "publicacions",
+  "collectionName": "publicaciones",
   "info": {
     "singularName": "publicacion",
-    "pluralName": "publicacions",
+    "pluralName": "publicaciones",
     "displayName": "Publicacion"
   },
   "options": {
@@ -13,11 +13,11 @@
   "attributes": {
     "titulo": {
       "type": "string",
-      "maxLength": 255,
       "required": true
     },
     "fechaPublicacion": {
-      "type": "datetime"
+      "type": "datetime",
+      "required": false
     },
     "esUrgente": {
       "type": "boolean",
@@ -31,13 +31,13 @@
       "type": "relation",
       "relation": "manyToMany",
       "target": "api::categoria.categoria",
-      "mappedBy": "publicaciones"
+      "inversedBy": "publicacions"
     },
     "users_permissions_users": {
       "type": "relation",
       "relation": "manyToMany",
       "target": "plugin::users-permissions.user",
-      "mappedBy": "publicaciones"
+      "inversedBy": "publicacions"
     },
     "contenido": {
       "type": "dynamiczone",
