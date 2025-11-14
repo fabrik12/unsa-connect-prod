@@ -1,25 +1,23 @@
-version: '3.8'
 services:
   strapi:
     build: .
     container_name: unsa-connect-backend-dev
     restart: unless-stopped
     env_file:
-      - .env
+      - .env.development
     ports:
       - "1337:1337"
     volumes:
-      # Persistencia de archivos subidos
+      # Montar solo el codigo y uploads para desarrollo (hot-reload)
+      - ./:/opt/app:delegated
       - ./public/uploads:/opt/app/public/uploads
-      # Montaje del código fuente para hot-reload (solo para desarrollo local)
-      - ./:/opt/app
-      # Opcional: persistencia de node_modules (solo para desarrollo local)
+      # Evitar montar node_modules para usar los del contenedor
       - /opt/app/node_modules
-      #
-      # Para producción, descomenta solo la línea de uploads.
     environment:
-      NODE_ENV: ${NODE_ENV:-development}
+      NODE_ENV: development
       PORT: ${PORT:-1337}
+    depends_on:
+      - postgres 
       
     # Opcional: healthcheck para Strapi
     healthcheck:
@@ -27,3 +25,23 @@ services:
       interval: 30s
       timeout: 10s
       retries: 5
+  postgres:
+    image: postgres:17
+    container_name: strapi_postgres_dev
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: strapi_dev
+      POSTGRES_USER: strapi
+      POSTGRES_PASSWORD: strapi
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U strapi -d strapi_dev -h localhost -p 5432"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+volumes:
+  pgdata:

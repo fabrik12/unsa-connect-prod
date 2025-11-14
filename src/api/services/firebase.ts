@@ -15,8 +15,8 @@ class FirebaseService {
     if (this.initialized) return;
 
     try {
-      console.log('🔥 [DEBUG Firebase] Inicializando Firebase Admin SDK...');
-      console.log('🔥 [DEBUG Firebase] Variable FIREBASE_SERVICE_ACCOUNT existe:', !!process.env.FIREBASE_SERVICE_ACCOUNT);
+      console.log('[DEBUG Firebase] Inicializando Firebase Admin SDK...');
+      console.log('[DEBUG Firebase] FIREBASE_SERVICE_ACCOUNT existe:', !!process.env.FIREBASE_SERVICE_ACCOUNT);
       
       const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT || '{}');
 
@@ -25,10 +25,10 @@ class FirebaseService {
       });
 
       this.initialized = true;
-      console.log('✅ Firebase Admin SDK initialized successfully');
+      console.log('Firebase Admin SDK initialized successfully');
     } catch (error: any) {
-      console.error('❌ Error initializing Firebase Admin SDK:', error.message);
-      console.error('❌ Stack:', error.stack);
+      console.error('Error initializing Firebase Admin SDK:', error.message);
+      console.error('Stack:', error.stack);
       throw error;
     }
   }
@@ -52,10 +52,10 @@ class FirebaseService {
 
     try {
       const response = await admin.messaging().send(message);
-      console.log('✅ Notificación enviada exitosamente:', response);
+      console.log('Notification sent successfully:', response);
       return response;
     } catch (error: any) {
-      console.error('❌ Error al enviar notificación:', error);
+      console.error('Error sending notification:', error);
       throw error;
     }
   }
@@ -69,7 +69,7 @@ class FirebaseService {
     }
 
     if (!tokens || tokens.length === 0) {
-      console.warn('⚠️ No hay tokens de dispositivos para enviar notificación');
+      console.warn('No device tokens available to send notification');
       return;
     }
 
@@ -84,10 +84,10 @@ class FirebaseService {
 
     try {
       const response = await admin.messaging().sendEachForMulticast(message);
-      console.log(`✅ Notificación enviada: ${response.successCount} exitosas, ${response.failureCount} fallidas`);
+      console.log(`Notification result: ${response.successCount} successful, ${response.failureCount} failed`);
       return response;
     } catch (error: any) {
-      console.error('❌ Error al enviar notificación:', error);
+      console.error('Error sending notification:', error);
       throw error;
     }
   }
