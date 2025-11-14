@@ -122,6 +122,8 @@ coverage
 ############################
 
 .env
+.env.development
+.env.production
 license.txt
 exports
 .strapi
@@ -136,3 +138,7 @@ build
 
 out/*
 proyecto-fsi-firebase-adminsdk-fbsvc-dd4c850248.json
+
+############################
+# Excluir el volcado de datos de la base de datos de desarrollo
+postgres-init/01-seed-data.sql
