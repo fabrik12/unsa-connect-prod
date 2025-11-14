@@ -36,14 +36,29 @@ Este proyecto está configurado para ejecutarse con Docker y Docker Compose, lo 
     ```
 
 2.  **Configurar variables de entorno:**
-    Copia el archivo de ejemplo y completa los valores de Supabase y claves de Strapi.
+
+    El backend con Strapi puede conectarse a dos tipos de base de datos según el entorno:
+
+    - **Producción (`main`)** → Supabase (DB + Storage).
+    - **Desarrollo (`develop` y ramas feature)** → Postgres local en contenedor Docker.
+
+    #### Archivos `.env`
+
+    Usamos diferentes archivos de configuración para cada entorno:
+
+    - `.env.development` → Postgres local.
+    - `.env.production` → Supabase (Render).
+
+    En el repositorio se encuentran los templates:
+
+    - `.env.development.example`
+    - `.env.production.example`
+
+    Cada desarrollador debe copiar el template y renombrarlo:
 
     ```bash
-    cp .env.example .env
-    # Edita .env y agrega tus credenciales de Supabase y claves de Strapi
+    cp .env.development.example .env.development
     ```
-
-    _(Nota: Las claves de seguridad de Strapi (`APP_KEYS`, `JWT_SECRET`, etc.) se generarán en el primer arranque si las dejas vacías en el `.env`)._
 
 3.  **Instalar dependencias (local):**
     Si vas a trabajar en modo desarrollo (hot-reload), ejecuta SIEMPRE:
@@ -81,8 +96,43 @@ Este proyecto está configurado para ejecutarse con Docker y Docker Compose, lo 
     > docker-compose up
     > ```
 
-5.  **Acceder al Admin:**
-    Abre `http://localhost:1337/admin` en tu navegador y crea tu primer usuario administrador.
+5.  Proceso de Sembrado de la Base de Datos Local
+
+    Para poblar tu base de datos local de Postgres, necesitas generar el archivo `01-seed-data.sql` desde Supabase.
+
+    **Este archivo está excluido de Git por razones de seguridad y tamaño.**
+
+    ## Pasos
+
+    1.  Asegúrate de tener tus variables de entorno de Supabase (`$SUPA_HOST`, `$SUPA_PASSWORD`, etc.) cargadas en tu terminal.
+    2.  Ejecuta el siguiente comando `pg_dump` desde la raíz del proyecto:
+
+        ```bash
+        docker run --rm \
+        -e PGPASSWORD="$SUPA_PASSWORD" \
+        postgres:17-alpine \
+        pg_dump \
+            -h "$SUPA_HOST" \
+            -p "$SUPA_PORT" \
+            -U "$SUPA_USER" \
+            -d "$SUPA_DB" \
+            --data-only \
+            -n public \
+            --inserts \
+            --exclude-table-data=public.strapi_database_schema \
+            --exclude-table-data=public.strapi_migrations \
+            --exclude-table-data=public.strapi_migrations_internal \
+        > postgres-init/01-seed-data.sql
+        ```
+
+    3.  Una vez generado el archivo, sigue el flujo de arranque: `docker-compose down -v`, `docker-compose up`, espera a Strapi, y luego ejecuta el sembrado:
+
+        ```bash
+        cat postgres-init/* | docker-compose exec -T postgres psql -U strapi -d strapi_dev
+        ```
+
+6.  **Acceder al Admin:**
+    Abre `http://localhost:1337/admin` en tu navegador y crea tu primer usuario administrador (o accede desde los creados previamente).
 
 ### Comandos útiles de Docker
 
