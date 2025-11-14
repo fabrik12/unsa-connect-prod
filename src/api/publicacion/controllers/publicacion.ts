@@ -53,11 +53,33 @@ export default factories.createCoreController('api::publicacion.publicacion', ({
 
         const populate = buildPopulate(rawPopulate);
 
+        // 🔥 NUEVO: Construir el where considerando los filtros del query
+        const where: any = {
+            publishedAt: { $notNull: true },
+        };
+
+        // 🔥 NUEVO: Si hay filtros de categoría, agregarlos al where
+        if (ctx.query.filters && (ctx.query.filters as any).categorias) {
+            const catFilters = (ctx.query.filters as any).categorias;
+            
+            // Soporte para: filters[categorias][nombre][$eq]=Evento
+            if (catFilters.nombre && catFilters.nombre.$eq) {
+                // Usar la sintaxis correcta de Strapi para filtrar relaciones N:M
+                where['$and'] = [
+                    {
+                        categorias: {
+                            nombre: {
+                                $eq: catFilters.nombre.$eq
+                            }
+                        }
+                    }
+                ];
+            }
+        }
+
         // Usa DB QUERY para saltar filtros automaticos de Strapi que ocultan publishedAt
         const entities = await strapi.db.query('api::publicacion.publicacion').findMany({
-            where: {
-                publishedAt: { $notNull: true },
-            },
+            where,
             populate,
         });
 

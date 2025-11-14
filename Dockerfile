@@ -1,6 +1,5 @@
-
 # Usar una imagen oficial de Node.js (v18 es recomendada para Strapi v5) y compatible con sharp
-FROM node:18-bullseye
+FROM node:20-bullseye
 
 # Establecer el directorio de trabajo dentro del contenedor
 WORKDIR /opt/app
@@ -31,5 +30,5 @@ ENV PATH="/opt/app/node_modules/.bin:$PATH"
 EXPOSE 1337
 
 # El comando para iniciar la aplicación en modo desarrollo
-#CMD ["yarn", "develop"]
-CMD ["sh", "-c", "yarn build && yarn develop"]
+CMD ["yarn", "develop"]
+#CMD ["sh", "-c", "yarn build && yarn develop"]
