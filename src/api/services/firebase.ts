@@ -53,6 +53,7 @@ class FirebaseService {
     try {
       const response = await admin.messaging().send(message);
       console.log('Notification sent successfully:', response);
+      strapi.log.info(`FCM payload: ${JSON.stringify({ title, body, data })}`);
       return response;
     } catch (error: any) {
       console.error('Error sending notification:', error);
